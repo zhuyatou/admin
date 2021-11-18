@@ -1,0 +1,9 @@
+// 注册一个全局组件
+import svgIcon from './svgIcon.vue'
+export default function initSvgIcon(app) {
+  app.component('svg-icon', svgIcon)
+}
+
+// 加载所有的svg
+const file = require.context('')
+file.keys().map(file)
