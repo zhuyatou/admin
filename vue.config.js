@@ -36,7 +36,7 @@ module.exports = {
       // 只代理api开头的网络请求
       '/api': {
         // 代理目的地址
-        target: 'http://api.imooc-admin.lgdsunday.club',
+        target: 'https://api.imooc-admin.lgdsunday.club',
         // 是否开启代理
         changeOrigin: true
       }

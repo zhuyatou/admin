@@ -11,7 +11,7 @@ import './styles/index.scss'
 import initSvgIcon from './icons/index.js'
 
 // 用户鉴权
-import './permission.js'
+// import './permission.js'
 
 const app = createApp(App)
 installElementPlus(app)
