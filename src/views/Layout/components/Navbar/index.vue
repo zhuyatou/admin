@@ -1,5 +1,9 @@
 <template>
   <div class="navbar">
+    <!-- 切换侧边栏的组件 -->
+    <cuttle class="cuttle-container" />
+    <!-- 面包屑 -->
+    <breadcrumb class="breadcrumb-container" />
     <div class="right-menu">
       <el-dropdown class="avatar-container">
         <!-- 头像 -->
@@ -20,6 +24,8 @@
 <script setup>
 import avatar from '@/assets/logo.png'
 import { useStore } from 'vuex'
+import Cuttle from '@/components/Cuttle/index.vue'
+import breadcrumb from '@/components/Breadcrumb/index.vue'
 const store = useStore()
 // 主动退出
 const logout = () => {
@@ -38,9 +44,9 @@ const logout = () => {
     align-items: center;
     float: right;
     padding-right: 16px;
-    :deep(.avatar-container) {
+    .avatar-container {
       cursor: pointer;
-      .avatar-wrapper {
+      :deep(.avatar-wrapper) {
         margin-top: 5px;
         position: relative;
         .el-avatar {
@@ -49,6 +55,20 @@ const logout = () => {
         }
       }
     }
+  }
+  .cuttle-container {
+    line-height: 50px;
+    height: 100%;
+    float: left;
+    cursor: pointer;
+    transition: background 1s;
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.1);
+    }
+  }
+  .breadcrumb-container{
+    height: 50px;
+    line-height: 50px;
   }
 }
 </style>

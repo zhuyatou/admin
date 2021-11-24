@@ -10,7 +10,9 @@
         <h3 class="title">用户登录</h3>
       </div>
       <el-form-item prop="username">
-        <span class="svg-container"> <svg-icon iconName="exit" /></span>
+        <span class="svg-container">
+          <svg-icon iconName="exit"></svg-icon>
+        </span>
         <el-input
           placeholder="name"
           v-model="loginForm.username"
@@ -20,7 +22,9 @@
       </el-form-item>
 
       <el-form-item prop="password">
-        <span class="svg-container"> <svg-icon iconName="pas" /></span>
+        <span class="svg-container">
+          <svg-icon iconName="pas"></svg-icon>
+        </span>
         <el-input
           placeholder="password"
           v-model="loginForm.password"
@@ -29,15 +33,15 @@
         ></el-input>
 
         <span class="svg-container" @click="toggleIcon">
-          <svg-icon :iconName="flag ? 'close-eye' : 'eye'"
-        /></span>
+          <svg-icon :iconName="flag ? 'close-eye' : 'eye'"></svg-icon>
+        </span>
       </el-form-item>
 
       <el-button
         type="primary"
         style="width: 100%; margin-top: 30px"
         @click="handleLogin"
-        >登录{{ store.state.user.token }}
+        >登录
       </el-button>
     </el-form>
   </div>
@@ -49,12 +53,12 @@ import { passwordValidate } from './rule.js'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
 const loginForm = ref({
-  username: 'admin',
+  username: 'super-admin',
   password: '123456'
 })
 
 // 表单数据
-const loginRules = ref({
+const loginRules = {
   username: [
     {
       required: true,
@@ -64,11 +68,12 @@ const loginRules = ref({
   ],
   password: [
     {
+      required: true,
       trigger: 'blur',
       validator: passwordValidate()
     }
   ]
-})
+}
 const flag = ref(true)
 const toggleIcon = () => {
   flag.value = !flag.value
@@ -86,10 +91,10 @@ const handleLogin = () => {
     }
     // 验证通过执行登录逻辑 调用定义好的actions
     store.dispatch('user/login', loginForm.value).then((res) => {
-      // 只有在登陆成功的状态下执行跳转
       router.push({
         name: 'Index'
       })
+      // 只有在登陆成功的状态下执行跳转
     })
   })
 }
@@ -150,7 +155,7 @@ $cursor: #fff;
     }
 
     .svg-container {
-      padding: 6px 5px 5px 15px;
+      padding: 6px 0 5px 10px;
       color: $dark_gray;
       vertical-align: middle;
       display: inline-block;

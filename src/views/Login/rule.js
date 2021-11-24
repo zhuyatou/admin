@@ -6,5 +6,6 @@ export const passwordValidate = () => {
     } else {
       callback()
     }
+    console.log(value)
   }
 }

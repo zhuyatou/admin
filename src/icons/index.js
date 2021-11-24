@@ -5,5 +5,5 @@ export default function initSvgIcon(app) {
 }
 
 // 加载所有的svg
-const file = require.context('')
+const file = require.context('@/icons/svg', false, /\.svg$/)
 file.keys().map(file)

@@ -1,7 +1,14 @@
 <template>
-  <div class="app-wrapper">
+  <div
+    class="app-wrapper"
+    :class="store.getters.sideBarOpen ? '' : 'hideSidebar'"
+  >
     <!-- 左侧边栏 -->
-    <side-bar :style="{ backgroundColor: variables.subMenuBg }" />
+    <side-bar
+      id="guide-sidebar"
+      class="sidebar-container"
+      :style="{ backgroundColor: variables.subMenuBg }"
+    />
     <!-- 右侧边栏 -->
     <div class="main-container">
       <div class="fixed-header">
@@ -16,6 +23,8 @@ import SideBar from './components/Sidebar/index.vue'
 import Navbar from './components/Navbar/index'
 import AppMain from './components/AppMain/index'
 import variables from '@/styles/variables.scss'
+import { useStore } from 'vuex'
+const store = useStore()
 </script>
 
 <style lang="scss" scoped>
@@ -23,22 +32,24 @@ import variables from '@/styles/variables.scss'
 @import '~@/styles/variables.scss';
 .app-wrapper {
   @include clearfix;
-  position: absolute;
+  position: relative;
   height: 100%;
   width: 100%;
-  .siderbar-container {
+  .sidebar-container {
     width: $sideBarWidth;
     height: 100vh;
   }
-
-  .main-container {
-    .fixed-header {
-      position: fixed;
-      top: 0px;
-      right: 0px;
-      z-index: 10;
-      width: cale(100% #{$sideBarWidth}); //动态计算宽度的
-    }
-  }
+}
+.fixed-header {
+  position: fixed;
+  top: 0px;
+  right: 0px;
+  z-index: 10;
+  width: calc(100% - #{$sideBarWidth}); // 用来动态计算宽度
+  transition: width 0.28s;
+}
+.hideSidebar .fixed-header {
+  width: calc(100% - #{$sideBarhideWidth});
+  transition: width 0.28s;
 }
 </style>
