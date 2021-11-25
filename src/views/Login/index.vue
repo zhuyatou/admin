@@ -7,7 +7,8 @@
       ref="loginRef"
     >
       <div class="title-container">
-        <h3 class="title">用户登录</h3>
+        <h3 class="title">{{ $t('msg.login.title') }}</h3>
+        <select-lang class="select-lang" />
       </div>
       <el-form-item prop="username">
         <span class="svg-container">
@@ -41,17 +42,22 @@
         type="primary"
         style="width: 100%; margin-top: 30px"
         @click="handleLogin"
-        >登录
+      >
+        {{ $t('msg.login.loginBtn') }}
       </el-button>
+      <!-- 账号tips -->
+      <div class="tips" v-html="$t('msg.login.desc')"></div>
     </el-form>
   </div>
 </template>
 
 <script setup>
-import { ref } from 'vue'
-import { passwordValidate } from './rule.js'
+import { ref, watch } from 'vue'
+import { passwordValidate, usernameValidate } from './rule.js'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
+import SelectLang from '@/components/SelectLang/index.vue'
+
 const loginForm = ref({
   username: 'super-admin',
   password: '123456'
@@ -63,7 +69,8 @@ const loginRules = {
     {
       required: true,
       trigger: 'blur',
-      message: '必须填用户名'
+      // message: i18n.t('msg.login.usernameRule')// 不具备响应式
+      validator: usernameValidate()
     }
   ],
   password: [
@@ -98,6 +105,15 @@ const handleLogin = () => {
     })
   })
 }
+// 监听getters.language的变化
+watch(
+  () => store.getters.language,
+  (newValue, oldValue) => {
+    //  中英文切换了  验证重新执行
+    loginRef.value.validateField('username')
+    loginRef.value.validateField('password')
+  }
+)
 </script>
 <style lang="scss" scoped>
 $bg: #2d3a4b;
@@ -124,6 +140,15 @@ $cursor: #fff;
       margin: 0px auto 40px auto;
       text-align: center;
       font-weight: bold;
+    }
+    :deep(.select-lang) {
+      position: absolute;
+      top: 9px;
+      right: 12px;
+      background-color: white;
+      font-size: 24px;
+      border-radius: 5px;
+      cursor: pointer;
     }
   }
 
@@ -159,6 +184,12 @@ $cursor: #fff;
       color: $dark_gray;
       vertical-align: middle;
       display: inline-block;
+    }
+    .tips {
+      font-size: 12px;
+      line-height: 20px;
+      color: #fff;
+      margin-bottom: 10px;
     }
   }
 }

@@ -13,14 +13,14 @@ import initSvgicon from './icons/index.js'
 
 // 用户鉴权
 import './permission.js'
+// 导入i18n
+import i18n from '@/i18n/index.js'
 
 const app = createApp(App)
 installElementPlus(app)
 // svg全局注册组件
 initSvgicon(app)
-
-app.use(store).use(router)
-app.mount('#app')
+app.use(store).use(router).use(i18n).mount('#app')
 /*eslint-disable*/
 // 入口main.js（导入模块，js模块） -->webpack 处口/js/app.js文件
 // 【css.文件 . 直接使用 .因为项目环境已经直接配置了常规的loader
@@ -41,4 +41,16 @@ app.mount('#app')
 
   如何配置webpack
   1.项目根目录创建
+*/
+
+/* 中英文切换（国际化）
+1、需要一个变量locale控制语言环境
+2、所有的语言中的数据源要事先准备好
+3、定义一个方法获取对应语言包中的数据
+
+借助   i18n   插件完成 国际化
+1.下载  i18n 
+  npm install vue-i18n@next//因为项目中vue3.2版本 保证  i18n 必须 >‘9.0.0’
+2.
+
 */
