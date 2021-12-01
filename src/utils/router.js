@@ -1,5 +1,6 @@
 /* eslint-disable */
 import path from 'path'
+import i18n from '@/i18n/index.js'
 /**
  * 返回所有子路由
  */
@@ -71,4 +72,36 @@ export function generateMenus(routes, basePath = '') {
     }
   })
   return result
+}
+/*
+配合fuse.js 处理路由数据源 满足fuse.js 的搜索方式
+@param routes 是filter过滤去重以后的路由
+*/
+
+export const generateFuse = (routes, titles = []) => {
+  let res = []
+  // 遍历routers
+  for (const route of routes) {
+    const data = {
+      path: route.path,
+      title: [...titles] // 不迭代的话这里是个空title 如迭代 这里就是以后的一级标题的title
+    }
+    // 条件1.具备meta && meta.title 2.过滤掉动态路由 /:id
+    const reg = /.*\/:.*/
+    if (route.meta && route.meta.title && !reg.exec(route.path)) {
+      // 变成国际化
+      data.title = [...data.title,route.meta.title]
+      res.push(data)
+    }
+    if(route.children && route.children.length >0){
+      const subRes = generateFuse(route.children,data.title)
+      if (subRes.length>0){
+         res = [...res,...subRes]
+      }
+     
+    }
+    
+  }
+
+  return res
 }

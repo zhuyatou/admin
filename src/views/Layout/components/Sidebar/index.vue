@@ -1,5 +1,5 @@
 <template>
-  <div class="">
+  <div>
     <!-- logo -->
     <div class="logo-container">
       <el-avatar :src="Logo" shape="square" />
@@ -15,9 +15,12 @@
 import Logo from '@/assets/logo.png'
 import SidebarMenu from './SidebarMenu.vue'
 import { useStore } from 'vuex'
+// const bgColor = store.getters.cssVar.menuBg
+// console.log(bgColor)
 const store = useStore()
 </script>
 <style lang="scss" scoped>
+
 .logo-container {
   height: 44px;
   padding: 10px 0 22px 0;

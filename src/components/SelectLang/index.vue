@@ -32,7 +32,7 @@ const selectLang = (lang) => {
   // i18n 中的 locale
   i18n.locale.value = lang // 去更改了i18n/index.js中的locale语言变量了
   // 提示语音切换成功
-  ElMessage.success(i18n.t('msg.switchLangSuccess'))
+  ElMessage.success(i18n.t('msg.toast.switchLangSuccess'))
 }
 </script>
 <style lang="scss" scoped></style>

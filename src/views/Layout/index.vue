@@ -7,14 +7,16 @@
     <side-bar
       id="guide-sidebar"
       class="sidebar-container"
-      :style="{ backgroundColor: variables.subMenuBg }"
+      :style="{ backgroundColor: store.getters.cssVar.menuBg }"
     />
     <!-- 右侧边栏 -->
     <div class="main-container">
       <div class="fixed-header">
         <Navbar />
+        <!-- tag view -->
+        <tag-view />
       </div>
-      <app-main />
+      <app-main class="appmain" />
     </div>
   </div>
 </template>
@@ -22,7 +24,8 @@
 import SideBar from './components/Sidebar/index.vue'
 import Navbar from './components/Navbar/index'
 import AppMain from './components/AppMain/index'
-import variables from '@/styles/variables.scss'
+import TagView from '@/components/TagView/index.vue'
+
 import { useStore } from 'vuex'
 const store = useStore()
 </script>
@@ -51,5 +54,8 @@ const store = useStore()
 .hideSidebar .fixed-header {
   width: calc(100% - #{$sideBarhideWidth});
   transition: width 0.28s;
+}
+.appmain {
+  margin-top: 34px;
 }
 </style>

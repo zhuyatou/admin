@@ -15,7 +15,7 @@ const PrivateRoutes = [
         path: '/user/manage',
         component: () => import('@/views/user-manage/index'),
         meta: {
-          title: 'userMessage',
+          title: 'userManage',
           icon: 'personnel-manage'
         }
       },
@@ -66,7 +66,7 @@ const PrivateRoutes = [
         path: '/article/ranking',
         component: () => import('@/views/article-ranking/index'),
         meta: {
-          title: 'article-ranking',
+          title: 'articleRanking',
           icon: 'article-ranking'
         }
       },
@@ -74,14 +74,14 @@ const PrivateRoutes = [
         path: '/article/:id',
         component: () => import('@/views/article-detail/index'),
         meta: {
-          title: 'articleDetail'
+          title: 'articleCreate'
         }
       },
       {
         path: '/article/create',
         component: () => import('@/views/article-create/index'),
         meta: {
-          title: 'article-create',
+          title: 'articleCreate',
           icon: 'article-create'
         }
       },

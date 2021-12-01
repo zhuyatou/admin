@@ -5,6 +5,12 @@
     <!-- 面包屑 -->
     <breadcrumb class="breadcrumb-container" />
     <div class="right-menu">
+      <!-- 导航搜索 -->
+      <search class="right-menu-item" />
+      <!--全屏切换  -->
+      <screen-full class="right-menu-item" />
+      <!-- 主题换肤 -->
+      <theme class="right-menu-item" />
       <!-- 国际化按钮 -->
       <select-lang class="right-menu-item" />
       <el-dropdown class="avatar-container">
@@ -31,7 +37,9 @@ import { useStore } from 'vuex'
 import Cuttle from '@/components/Cuttle/index.vue'
 import breadcrumb from '@/components/Breadcrumb/index.vue'
 import SelectLang from '@/components/SelectLang/index.vue'
-
+import Theme from '@/components/Theme/index.vue'
+import ScreenFull from '@/components/Screenfull/index.vue'
+import Search from '@/components/Search/index.vue'
 const store = useStore()
 // 主动退出
 const logout = () => {
