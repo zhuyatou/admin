@@ -19,7 +19,7 @@ import { getTitle as getTitle_, watchLang } from '@/utils/i18n.js'
 const getTitle = (to) => {
   if (!to.meta || !to.meta.title) {
     // 如果不存在title
-    const tmp = to.path.splite('/')
+    const tmp = to.path.split('/')
     return tmp[tmp.length - 1]
   } else {
     // 如果存在title 以path的最后一项作为title
@@ -56,7 +56,7 @@ watch(
 watchLang(() => {
   // 重新更新 vuex中的title的值
   const tmpArr = []
-  store.getters.tagViewList.forEach((route, index) => {
+  store.getters.tagViewList.forEach((route) => {
     tmpArr.push({ ...route, title: getTitle(route) })
   })
   store.commit('tag/changeTitle', tmpArr)

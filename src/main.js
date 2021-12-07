@@ -15,11 +15,14 @@ import initSvgicon from './icons/index.js'
 import './permission.js'
 // 导入i18n
 import i18n from '@/i18n/index.js'
+// 注册全局属性
+import initFilters from '@/filters/index.js'
 
 const app = createApp(App)
 installElementPlus(app)
 // svg全局注册组件
 initSvgicon(app)
+initFilters(app)
 app.use(store).use(router).use(i18n).mount('#app')
 /*eslint-disable*/
 // 入口main.js（导入模块，js模块） -->webpack 处口/js/app.js文件

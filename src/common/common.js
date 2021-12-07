@@ -5,7 +5,7 @@ export const USER_INFO = 'user_info'
 export const TIME_STAMP = 'time_stamp'
 
 // 2小时
-export const TIME_OUT = 60 * 1000
+export const TIME_OUT = 60 * 1000 * 60 * 2
 
 export const LANGUAGR = 'language'
 
@@ -61,4 +61,12 @@ export const colorTables = {
   subMenuBg: 'color(primary tint(80%))',
   menuHover: 'color(primary tint(90%))',
   menuBg: 'color(primary)'
+}
+// excel批量导入 字段对应关系
+export const USER_RELATION = {
+  姓名: 'username',
+  联系方式: 'mobile',
+  角色: 'role',
+  开通时间: 'openTime'
+  // 头像: 'avatar'
 }

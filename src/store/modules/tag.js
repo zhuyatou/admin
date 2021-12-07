@@ -16,7 +16,7 @@ export default {
       }
     },
     // 更新tagViewList中的指定索引每一个title
-    changeTile(state, tagViewList) {
+    changeTitle(state, tagViewList) {
       state.tagViewList = tagViewList
       setItem(TAG_VIEWS, state.tagViewList)
     },

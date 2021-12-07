@@ -46,7 +46,6 @@ export const generateColors = (primary) => {
     const value = colorTables[key].replace(new RegExp(/primary/g), primary)
     // 生成16进制的颜色
     colors[key] = '#' + rgbHex(color.convert(value))
-    console.log(value)
   })
   return colors
 }
