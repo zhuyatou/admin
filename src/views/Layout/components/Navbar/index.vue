@@ -6,8 +6,8 @@
     <breadcrumb class="breadcrumb-container" />
     <div class="right-menu">
       <!-- 导航搜索 -->
-      <search class="right-menu-item" />
-      <!--全屏切换  -->
+      <search />
+      <!-- 全屏切换 -->
       <screen-full class="right-menu-item" />
       <!-- 主题换肤 -->
       <theme class="right-menu-item" />
@@ -35,11 +35,12 @@
 import avatar from '@/assets/logo.png'
 import { useStore } from 'vuex'
 import Cuttle from '@/components/Cuttle/index.vue'
-import breadcrumb from '@/components/Breadcrumb/index.vue'
+import Breadcrumb from '@/components/Breadcrumb/index.vue'
 import SelectLang from '@/components/SelectLang/index.vue'
 import Theme from '@/components/Theme/index.vue'
 import ScreenFull from '@/components/Screenfull/index.vue'
 import Search from '@/components/Search/index.vue'
+
 const store = useStore()
 // 主动退出
 const logout = () => {
@@ -51,45 +52,47 @@ const logout = () => {
   height: 50px;
   overflow: hidden;
   position: relative;
-  background-color: #fff;
-  box-shadow: 0 1px 4px rgba(0, 21, 41, 0.08);
+  background: #fff;
+  box-shadow: 0 1px 4px rgba(0, 21, 41.08);
   .right-menu {
     display: flex;
     align-items: center;
     float: right;
     padding-right: 16px;
-    :deep(.right-menu-item) {
-      display: inline-block;
-      padding: 0 18px 0 0;
-      font-size: 24px;
-      color: #ccc;
-      vertical-align: text-bottom;
-      &:hover {
-        background: rgba(0, 0, 0, 0);
-      }
-    }
     .avatar-container {
       cursor: pointer;
-      :deep(.avatar-wrapper) {
+      .avatar-wrapper {
         margin-top: 5px;
         position: relative;
-        .el-avatar {
+        :deep(.el-avatar) {
           --el-avatar-background-color: none;
           margin-right: 10px;
         }
       }
     }
   }
+
+  :deep(.right-menu-item) {
+    display: inline-block;
+    padding: 0 7px 0 18px;
+    font-size: 24px;
+    color: #fff;
+    vertical-align: text-bottom;
+    line-height: 50px;
+    cursor: pointer;
+  }
+
   .cuttle-container {
     line-height: 50px;
     height: 100%;
     float: left;
     cursor: pointer;
-    transition: background 1s;
+    transition: background 0.5s;
     &:hover {
-      background-color: rgba(0, 0, 0, 0.1);
+      background: rgba(0, 0, 0, 0.1);
     }
   }
+
   .breadcrumb-container {
     height: 50px;
     line-height: 50px;

@@ -8,7 +8,7 @@
     <!-- 取色器 -->
     <div class="content">
       <p class="title">{{ $t('msg.theme.themeColorChange') }}</p>
-      <el-color-picker v-model="color" :predefine="predefineColor" />
+      <el-color-picker v-model="color" :predefine="predefineColors" />
     </div>
     <template #footer>
       <span class="dialog-footer">
@@ -27,38 +27,49 @@ import { defineProps, defineEmits, ref } from 'vue'
 import { useStore } from 'vuex'
 import { predefineColors } from '@/common/common.js'
 import { generateNewStyle, writeStyleToHearTag } from '@/utils/theme.js'
+
 const store = useStore()
+
 defineProps({
   showDialogVariable: {
     type: Boolean,
     required: true
   }
 })
-const emits = defineEmits(['closeDialog'])
+
 // 关闭模态框
+const emits = defineEmits(['closeDialog'])
 const handleClose = () => {
-  // 触发一个自定义事件closeDialog
+  // 触发一个自定义事件 closeDialog
   emits('closeDialog')
 }
 
-// 切换按钮
+// 取色器选中的颜色(主题色) 刷新不能丢失,其他地方需要使用主题色,所以要放到vuex和localStorage
+const color = ref(store.getters.theme_color)
+
+// 预定义颜色
+// const predefineColor = [...predefineColors]
+
+// 确认切换按钮
 const confirm = async () => {
   console.log(color.value)
-  // 1.保存颜色
+  // 1.保存主题色
   store.commit('theme/setMyColor', color.value)
-  // 2.替换 element和本地的样式 让主题色生效
+  // 2.替换element和本地的样式 让主题色生效
+  /*
+      1.获取所有element的样式
+      2.将样式中的情景颜色替换成 color.value
+        color作为基本色生成一系列的和他相近的请景色
+      3.将替换完的样式插入到html的header中,利用css的优先级让插入的样式生效
+    */
   // 2-1 生成最终要替换的颜色
-  const newStyle = await generateNewStyle(color.value)
-  // console.log(newStyle)
-  // 2-2将替换完的样式 插入到header中，利用css的优先级让插入的样式生效
-  writeStyleToHearTag(newStyle)
-  // 3.关闭dialog
+  const data = await generateNewStyle(color.value)
+  // 2-2 将替换完的样式插入到header中,利用css的优先级让插入的样式生效
+  writeStyleToHearTag(data)
+
+  // 3.关闭dialog(取色器)
   emits('closeDialog')
 }
-// 取色器选中的颜色 主题颜色 刷新不能掉 其他地方需要使用主题色  vuex localstorage
-const color = ref(store.getters.theme_color)
-// 定义预定颜色
-const predefineColor = [...predefineColors]
 </script>
 <style lang="scss" scoped>
 .content {

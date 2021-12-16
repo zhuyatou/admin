@@ -126,7 +126,7 @@ export default {
     action: '操作',
     show: '查看',
     showRole: '角色',
-    defaultRole: '员工',
+    defaultRole: '暂无角色',
     remove: '删除',
     removeSuccess: '删除成功',
     title: '导出为 excel',
@@ -138,8 +138,8 @@ export default {
     dialogTitle1: '确定要删除用户 ',
     dialogTitle2: ' 吗？',
     roleDialogTitle: '配置角色',
-    noExcelFile: '该文件不是一个excel',
-    nodateFormate: '时间不能转化'
+    nodateFormate: '时间不能转化',
+    noExcelFile: '该文件不是一个excel'
   },
   role: {
     buttonTxt: '新增角色',
@@ -152,7 +152,9 @@ export default {
     dialogTitle: '新增角色',
     dialogRole: '角色名称',
     dialogDesc: '角色描述',
-    updateRoleSuccess: '用户角色更新成功'
+    updateRoleSuccess: '用户角色更新成功',
+    toggleTitle1: '全部展开',
+    toggleTitle2: '全部收起'
   },
   permission: {
     name: '权限名称',

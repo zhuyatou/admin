@@ -1,18 +1,25 @@
 export const TOKEN = 'token'
-
 export const USER_INFO = 'user_info'
-
 export const TIME_STAMP = 'time_stamp'
 
-// 2小时
-export const TIME_OUT = 60 * 1000 * 60 * 2
+// 两小时
+export const TIME_OUT = 60 * 1000
 
-export const LANGUAGR = 'language'
+export const LANGUAGE = 'language'
 
 // 主题色
 export const MYCOLOR = 'theme_color'
 
 export const TAG_VIEWS = 'tag_views'
+
+// excel批量导入 字段对应关系
+export const USER_RELATION = {
+  姓名: 'username',
+  联系方式: 'mobile',
+  角色: 'role',
+  开通时间: 'openTime'
+}
+
 // el-color-picker 默认颜色
 export const predefineColors = [
   '#ff4500',
@@ -62,11 +69,9 @@ export const colorTables = {
   menuHover: 'color(primary tint(90%))',
   menuBg: 'color(primary)'
 }
-// excel批量导入 字段对应关系
-export const USER_RELATION = {
-  姓名: 'username',
-  联系方式: 'mobile',
-  角色: 'role',
-  开通时间: 'openTime'
-  // 头像: 'avatar'
-}
+
+export const ROLE = 'roles'
+
+export const PERMISSION = 'permissions'
+
+export const PERMISSION_ = 'permissions_'

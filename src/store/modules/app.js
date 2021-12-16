@@ -1,16 +1,16 @@
-import { LANGUAGR } from '@/common/common.js'
 import { getItem, setItem } from '@/utils/storage.js'
+import { LANGUAGE } from '@/common/common.js'
 
 const state = {
-  sideBarOpened: false,
-  language: getItem(LANGUAGR) || ''
+  sideBarOpened: true,
+  language: getItem(LANGUAGE) || ''
 }
 const mutations = {
   toggleSideBar(state) {
     state.sideBarOpened = !state.sideBarOpened
   },
   setLanguage(state, lang) {
-    setItem(LANGUAGR, lang)
+    setItem(LANGUAGE, lang)
     state.language = lang
   }
 }

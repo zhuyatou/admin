@@ -1,15 +1,16 @@
 <template>
+  <!-- el-icon -->
   <i :class="icon" v-if="icon.includes('el-icon')"></i>
   <!-- svg组件 -->
   <svg-icon :iconName="icon" className="sideClass" v-else />
-  <span>{{ getTitle(title) }} </span>
+  <span>{{ getTitle(title) }}</span>
 </template>
 <script setup>
-import { getTitle } from '@/utils/i18n.js'
 import { defineProps } from 'vue'
+import { getTitle } from '@/utils/i18n.js'
 defineProps({
   title: {
-    String,
+    type: String,
     required: true
   },
   icon: {

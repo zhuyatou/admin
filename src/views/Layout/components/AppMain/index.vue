@@ -1,12 +1,14 @@
 <template>
   <div class="app-main">
-    <!-- 二级路由显示容器 -->
-    <router-view v-slot='{Component}'>
+    <router-view v-slot="{ Component }">
       <transition name="fade" mode="out-in">
-        <component  :is="Component"/>
+        <keep-alive>
+          <component :is="Component" />
+        </keep-alive>
       </transition>
     </router-view>
   </div>
+  <!-- 二级路由显示容器 -->
 </template>
 <script setup>
 import { watch } from 'vue'
@@ -22,21 +24,22 @@ const getTitle = (to) => {
     const tmp = to.path.split('/')
     return tmp[tmp.length - 1]
   } else {
-    // 如果存在title 以path的最后一项作为title
+    // 如果存在title --> 以 path 的最后一项作为 title
     return getTitle_(to.meta.title)
   }
 }
 
-// 监听当前路由变化----》增加tag 到指定位置
 const route = useRoute()
 const store = useStore()
+
+// 监听当前路由变化 --> 添加 tag 到指定位置
 watch(
   route,
   (to, from) => {
     if (isNoTag(to.path)) {
       return true
     }
-    // 合法的tag到vuex
+    // 增加一个合法的 tag 到 vuex 中
     const { path, fullPath, meta, name, params, query } = to
     store.commit('tag/addTagViewList', {
       path,
@@ -52,12 +55,13 @@ watch(
     immediate: true
   }
 )
+
 // 当国际化切换
 watchLang(() => {
-  // 重新更新 vuex中的title的值
+  // 重新更新vuex中的title值
   const tmpArr = []
   store.getters.tagViewList.forEach((route) => {
-    tmpArr.push({ ...route, title: getTitle(route) })
+    tmpArr.push({ ...route, title: getTitle(route) }) // 不能使用getTitle_(route.title)
   })
   store.commit('tag/changeTitle', tmpArr)
 })

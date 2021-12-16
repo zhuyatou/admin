@@ -1,42 +1,42 @@
-/* eslint-disable */
+// 在js中可以直接引入node的模块,但是在.vue中是引入不了的
 import path from 'path'
 import i18n from '@/i18n/index.js'
-/**
- * 返回所有子路由
- */
-const getChildrenRoutes = (routes) => {
+
+/*
+  1.去除重复的二级路由,保持一二级路由的层级关系
+*/
+// 获取所有的二级路由
+const getChildrenRouters = (routes) => {
   const result = []
   routes.forEach((route) => {
     if (route.children && route.children.length > 0) {
+      // 当前route是一级路由
       result.push(...route.children)
     }
   })
   return result
 }
-/**
- * 查重去除子路由
- */
-export const filterRouters = (routes) => {
-  const childrenRoutes = getChildrenRoutes(routes)
-  return routes.filter((route) => {
-    return !childrenRoutes.find((childrenRoute) => {
-      return childrenRoute.path === route.path
+
+export const filterRouter = (routes) => {
+  // 获取所有的二级路由
+  const childrenRouters = getChildrenRouters(routes)
+  return routes.filter((router) => {
+    // 只要在childrenRouters存在的,说明是二级路由,不保存
+    return !childrenRouters.find((childrenRoute) => {
+      return childrenRoute.path === router.path
     })
   })
 }
 
-/**
- * 判断数据是否为空值
- */
-function isNull(data) {
+/*
+  2.将routes(filterRouter后的)为了配合v-for遍历生成菜单,需要格式化数据
+*/
+const isNull = (data) => {
   if (!data) return true
   if (JSON.stringify(data) === '{}') return true
   if (JSON.stringify(data) === '[]') return true
   return false
 }
-/**
- * 根据 routes 数据，返回对应 menu 规则数组
- */
 export function generateMenus(routes, basePath = '') {
   const result = []
   // 遍历路由表
@@ -73,35 +73,34 @@ export function generateMenus(routes, basePath = '') {
   })
   return result
 }
-/*
-配合fuse.js 处理路由数据源 满足fuse.js 的搜索方式
-@param routes 是filter过滤去重以后的路由
-*/
 
+/*
+  3.配合 fuse.js 处理路由数据源 满足fuse.js的搜索方式
+  @ param routes 是fliter 过滤去重以后的路由
+*/
 export const generateFuse = (routes, titles = []) => {
   let res = []
-  // 遍历routers
+  // 遍历routes
   for (const route of routes) {
     const data = {
       path: route.path,
-      title: [...titles] // 不迭代的话这里是个空title 如迭代 这里就是以后的一级标题的title
+      title: [...titles] // 不迭代的话这里是个空title 如果迭代这里就是以后的一级标题的title
     }
-    // 条件1.具备meta && meta.title 2.过滤掉动态路由 /:id
+    // 条件:1.具备meta && meat.title 2.过滤掉动态路由 (带/:id就是动态路由)
     const reg = /.*\/:.*/
     if (route.meta && route.meta.title && !reg.exec(route.path)) {
       // 变成国际化
-      data.title = [...data.title,route.meta.title]
+      const title = i18n.global.t('msg.route.' + route.meta.title)
+      data.title = [...data.title, title]
       res.push(data)
     }
-    if(route.children && route.children.length >0){
-      const subRes = generateFuse(route.children,data.title)
-      if (subRes.length>0){
-         res = [...res,...subRes]
-      }
-     
-    }
-    
-  }
 
+    if (route.children && route.children.length > 0) {
+      const subRes = generateFuse(route.children, data.title)
+      if (subRes.length > 0) {
+        res = [...res, ...subRes]
+      }
+    }
+  }
   return res
 }

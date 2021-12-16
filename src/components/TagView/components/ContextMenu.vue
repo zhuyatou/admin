@@ -22,18 +22,24 @@ const refresh = () => {
 }
 const emits = defineEmits('closeTag')
 const closeRight = () => {
-  store.commit('tag/closeTag', { type: 'right', index: props.index })
+  store.commit('tag/closeTag', {
+    type: 'right',
+    index: props.index
+  })
   emits('closeTag')
 }
 const closeOther = () => {
-  store.commit('tag/closeTag', { type: 'other', index: props.index })
+  store.commit('tag/closeTag', {
+    type: 'other',
+    index: props.index
+  })
   emits('closeTag')
 }
 </script>
 <style lang="scss" scoped>
 .context-menu-container {
   position: fixed;
-  background-color: #fff;
+  background: #fff;
   z-index: 1000;
   list-style-type: none;
   padding: 5px 0;
@@ -47,7 +53,7 @@ const closeOther = () => {
     padding: 7px 16px;
     cursor: pointer;
     &:hover {
-      background-color: #eee;
+      background: #eee;
     }
   }
 }

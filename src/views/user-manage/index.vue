@@ -1,7 +1,12 @@
 <template>
   <div class="user-manage-container">
     <el-card class="header">
-      <el-button type="primary" @click="onImportExcel">
+      <!-- excel按钮 -->
+      <el-button
+        type="primary"
+        @click="onImportExcel"
+        v-showPermission="'importUser'"
+      >
         {{ $t('msg.excel.importExcel') }}
       </el-button>
       <el-button type="success" @click="onExportExcel">{{
@@ -11,7 +16,7 @@
 
     <el-card>
       <!-- table -->
-      <el-table :data="tableDate" border style="width: 100%">
+      <el-table :data="tableData" border style="width: 100%">
         <el-table-column
           label="#"
           type="index"
@@ -39,9 +44,13 @@
         <el-table-column :label="$t('msg.excel.role')" align="center">
           <template #default="{ row }">
             <div v-if="row.role && row.role.length > 0">
-              <el-tag v-for="tag in row.role" :key="tag.id" size="mini">{{
-                tag.title
-              }}</el-tag>
+              <el-tag
+                style="margin-left: 10px"
+                v-for="tag in row.role"
+                :key="tag.id"
+                size="mini"
+                >{{ tag.title }}</el-tag
+              >
             </div>
             <div v-else>
               <el-tag size="mini">{{ $t('msg.excel.defaultRole') }}</el-tag>
@@ -63,15 +72,25 @@
           align="center"
         >
           <template #default="{ row }">
-            <el-button size="mini" type="success">{{
-              $t('msg.excel.show')
-            }}</el-button>
-            <el-button size="mini" type="primary">{{
-              $t('msg.excel.showRole')
-            }}</el-button>
-            <el-button size="mini" type="warning" @click="removeData(row)">{{
-              $t('msg.excel.remove')
-            }}</el-button>
+            <el-button
+              size="mini"
+              type="success"
+              @click="showUserDetail(row)"
+              >{{ $t('msg.excel.show') }}</el-button
+            >
+            <el-button
+              size="mini"
+              type="primary"
+              @click="showRole(row)"
+              >{{ $t('msg.excel.showRole') }}</el-button
+            >
+            <el-button
+              v-showPermission="'removeUser'"
+              size="mini"
+              type="warning"
+              @click="removeData(row)"
+              >{{ $t('msg.excel.remove') }}</el-button
+            >
           </template>
         </el-table-column>
       </el-table>
@@ -87,7 +106,8 @@
         :total="total"
       ></el-pagination>
     </el-card>
-    <!-- excel 导出模态显示 -->
+
+    <!-- excel 导出 模态框 -->
     <export-excel
       :dialogShow="dialogShow"
       @closeDialog="close"
@@ -97,6 +117,7 @@
       :filename="filename"
       message="下载成功"
     >
+      <!-- 插槽 选择下载的文件类型 -->
       <el-select
         v-model="exportType"
         placeholder="Select"
@@ -107,46 +128,83 @@
         <el-option :key="2" label="全部数据" :value="2"> </el-option>
       </el-select>
     </export-excel>
+
+    <!-- 用户修改角色模态框 -->
+    <edit-role
+      :isShowRoleDialog="isShowRoleDialog"
+      :userId="userId"
+      @close="closeRoleDialog"
+      @update="getManageUser"
+    />
   </div>
 </template>
 
 <script setup>
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
-import { getUser, getAlluser } from '@/api/user-manage.js'
+import { getUser, getAllUser, deleteUserById } from '@/api/user-manage.js'
 import ExportExcel from '@/components/ExportExcel/index.vue'
 import { USER_RELATION } from '@/common/common.js'
-import dateFilter from '@/filters/dateFilter.js'
-import { watchLang } from '@/utils/i18n.js'
+import dateFilter from '@/filters/dataFilter.js'
 import { useI18n } from 'vue-i18n'
-import { ElMessageBox } from 'element-plus'
+import { watchLang } from '@/utils/i18n.js'
+import { ElMessageBox, ElMessage } from 'element-plus'
+import EditRole from './components/EditUserRole.vue'
 
+// 角色相关
+const isShowRoleDialog = ref(false)
+const userId = ref('')
+const showRole = (row) => {
+  userId.value = row._id
+  isShowRoleDialog.value = true
+}
+const closeRoleDialog = () => {
+  isShowRoleDialog.value = false
+}
+
+// excel 相关数据定义
 const i18n = useI18n()
 const filename = ref(i18n.t('msg.excel.defaultName'))
 const router = useRouter()
+const exportType = ref(1)
+const exportData = ref([])
+
+// 表格相关数据
+const tableData = ref([])
+
+// 分页相关数据定义
+const size = ref(5)
+const page = ref(1)
+const total = ref(0)
+
+// 初始化用户数据
+const getManageUser = async () => {
+  const data = await getUser({
+    page: page.value,
+    size: size.value
+  })
+  tableData.value = exportData.value = data.list
+  total.value = data.total
+}
+getManageUser()
+
 // 跳转到导入页面
 const onImportExcel = () => {
   router.push({ path: '/user/import' })
 }
-const dialogShow = ref(false)
+
 // 导出业务相关
-// 点击打开dialog
+const dialogShow = ref(false)
+// 点击打开模态框
 const onExportExcel = () => {
   dialogShow.value = true
   changeExportType(1)
 }
-// 监听关闭dialog
+// 监听关闭模态框
 const close = () => {
   dialogShow.value = false
   exportType.value = 1
 }
-// 表格相关数据
-const tableDate = ref([])
-
-// 分页相关数据
-const size = ref(5)
-const page = ref(1)
-const total = ref(0)
 
 // 改变页大小
 const sizeChange = (currentSize) => {
@@ -159,27 +217,16 @@ const currentChange = (currentPage) => {
   getManageUser()
 }
 
-// 获取用户数据
-const getManageUser = async () => {
-  const data = await getUser({
-    page: page.value,
-    size: size.value
-  })
-  tableDate.value = exportData.value = data.list
-  total.value = data.total
-}
-getManageUser()
-const exportType = ref(1)
-const exportData = ref([])
+// 切换下载数据文件的类型
 const changeExportType = async (value) => {
   if (value === 1) {
-    // 当前页数据
-    filename.value = `${i18n.t('msg.excel.defaultName')}(${page.value}) `
+    // 下载当前页
+    filename.value = `${i18n.t('msg.excel.defaultName')}(${page.value})`
   } else {
     // 下载全部数据
-    filename.value = i18n.t('msg.excel.defaultName')
-    const { list } = await getAlluser()
+    const { list } = await getAllUser()
     exportData.value = list
+    filename.value = i18n.t('msg.excel.defaultName')
   }
 }
 
@@ -196,7 +243,7 @@ const dataFormate = (data) => {
           return '[]'
         }
       } else if (USER_RELATION[key] === 'openTime') {
-        //  处理时间
+        // 处理时间
         return dateFilter(item[USER_RELATION[key]])
       } else {
         return item[USER_RELATION[key]]
@@ -204,30 +251,40 @@ const dataFormate = (data) => {
     })
   })
 }
+
 // 删除用户
 const removeData = (row) => {
   ElMessageBox.confirm(
-    `${i18n.t('msg.excel.dialogTitle1')}  :${row.username} ${i18n.t(
+    `${i18n.t('msg.excel.dialogTitle1')} "${row.username}" ${i18n.t(
       'msg.excel.dialogTitle2'
-    )} `,
+    )}`,
     i18n.t('msg.excel.remove'),
     {
       confirmButtonText: i18n.t('msg.excel.remove'),
       cancelButtonText: i18n.t('msg.excel.close'),
       type: 'warning'
     }
-  )
-    .then((res) => {
-      console.log(res)
-    })
-    .catch((err) => {
-      console.log(err)
-    })
+  ).then(async (res) => {
+    await deleteUserById(row._id)
+    ElMessage.success(i18n.t('msg.excel.removeSuccess'))
+    getManageUser()
+  })
 }
-// 监听语言的变化
-watchLang((lang) => {
-  filename.value = i18n.t('msg.excel.defaultName')
-})
+
+// 跳转详情
+const showUserDetail = (row) => {
+  router.push({ path: '/user/info/' + row._id })
+}
+
+// 监听语言变化
+watchLang(
+  (lang) => {
+    filename.value = i18n.t('msg.excel.defaultName')
+  },
+  () => {
+    getManageUser()
+  }
+)
 </script>
 
 <style lang="scss" scoped>

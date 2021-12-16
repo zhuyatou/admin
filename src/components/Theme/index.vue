@@ -14,17 +14,16 @@
     <!-- 下拉选项 -->
     <template #dropdown>
       <el-dropdown-menu>
-        <el-dropdown-item
-          >{{ $t('msg.theme.themeColorChange') }}
-        </el-dropdown-item>
+        <el-dropdown-item>{{
+          $t('msg.theme.themeColorChange')
+        }}</el-dropdown-item>
       </el-dropdown-menu>
     </template>
   </el-dropdown>
   <!-- 弹出的模态框 -->
-
   <select-color
     :showDialogVariable="showDialogVariable"
-    @closeDialog="hideSlectColor"
+    @closeDialog="hideSelectColor"
   />
 </template>
 <script setup>
@@ -34,8 +33,8 @@ const showDialogVariable = ref(false)
 const showSelectColor = () => {
   showDialogVariable.value = true
 }
-const hideSlectColor = () => {
+const hideSelectColor = () => {
   showDialogVariable.value = false
 }
 </script>
-<style lang="less" scoped></style>
+<style lang="scss" scoped></style>

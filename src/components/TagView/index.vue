@@ -11,7 +11,8 @@
         borderColor: isActive(route) ? store.getters.cssVar.menuBg : ''
       }"
       @contextmenu.prevent.stop="showContextMenu($event, index)"
-      >{{ route.title }}
+    >
+      {{ route.title }}
       <!-- 渲染删除icon -->
       <i
         class="el-icon-close"
@@ -19,38 +20,41 @@
         @click.prevent.stop="closeCurrentTag(index)"
       ></i>
     </router-link>
+
     <!-- 操作菜单 -->
     <context-menu
       v-if="isShowContextMenu"
       :style="styleObj"
       :index="selectIndex"
-      @closeTag="closeContentMenu"
+      @closeTag="closeContextMenu"
     />
   </div>
 </template>
 <script setup>
-import { useRoute, useRouter } from 'vue-router'
 import { useStore } from 'vuex'
-import { ref, watch } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 import ContextMenu from './components/ContextMenu.vue'
+import { ref, watch } from 'vue'
+
 const store = useStore()
 const route = useRoute()
 // 是否激活
 const isActive = (tag) => {
   return route.path === tag.path
 }
+
 const isShowContextMenu = ref(false)
 const styleObj = ref({
   left: 0,
   top: 0
 })
 const selectIndex = ref(-1)
-// 右击菜单
+// 右击显示菜单
 const router = useRouter()
 const showContextMenu = (e, index) => {
   router.push({ path: store.getters.tagViewList[index].path })
   isShowContextMenu.value = true
-  styleObj.value.top = '90px'
+  styleObj.value.top = '90 px'
   styleObj.value.left = e.x + 'px'
   selectIndex.value = index
 }
@@ -58,15 +62,20 @@ const showContextMenu = (e, index) => {
 // 关闭当前
 const closeCurrentTag = (index) => {
   selectIndex.value = index
-  store.commit('tag/closeTag', { type: 'index', index: selectIndex.value })
+  store.commit('tag/closeTag', {
+    type: 'index',
+    index: selectIndex.value
+  })
+  closeContextMenu()
 }
+
 // 关闭
 const closeContextMenu = () => {
   isShowContextMenu.value = false
 }
 
-// 点击body关闭contextMenu
-watch(isShowContextMenu, (newValue, oldvalue) => {
+// 点击body 关闭contextMenu
+watch(isShowContextMenu, (newValue, oldValue) => {
   if (newValue) {
     document.addEventListener('click', closeContextMenu)
   } else {
@@ -95,7 +104,8 @@ watch(isShowContextMenu, (newValue, oldvalue) => {
     margin-left: 5px;
     margin-top: 4px;
     border-radius: 3px;
-    &:first-of-type {
+    &,
+    :first-of-type {
       margin-left: 15px;
     }
     &:last-of-type {
@@ -114,6 +124,7 @@ watch(isShowContextMenu, (newValue, oldvalue) => {
         margin-right: 4px;
       }
     }
+
     // close 按钮
     .el-icon-close {
       width: 16px;
@@ -124,13 +135,13 @@ watch(isShowContextMenu, (newValue, oldvalue) => {
       text-align: center;
       transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
       transform-origin: 100% 50%;
-      &:before {
+      &::before {
         transform: scale(0.6);
         display: inline-block;
         vertical-align: -3px;
       }
       &:hover {
-        background-color: #b4bccc;
+        background: #b4bccc;
         color: #fff;
       }
     }

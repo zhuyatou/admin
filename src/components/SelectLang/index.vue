@@ -26,12 +26,12 @@ import { ElMessage } from 'element-plus'
 const store = useStore()
 const i18n = useI18n()
 const selectLang = (lang) => {
-  // vuex 中的 language
+  // 修改vuex中的language
   store.commit('app/setLanguage', lang)
+  // i18n中的locale
+  i18n.locale.value = lang // 更改了 i18n/index.js 中的locale语言变量
 
-  // i18n 中的 locale
-  i18n.locale.value = lang // 去更改了i18n/index.js中的locale语言变量了
-  // 提示语音切换成功
+  // 提示语言切换成功
   ElMessage.success(i18n.t('msg.toast.switchLangSuccess'))
 }
 </script>

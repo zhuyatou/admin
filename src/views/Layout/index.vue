@@ -3,16 +3,16 @@
     class="app-wrapper"
     :class="store.getters.sideBarOpen ? '' : 'hideSidebar'"
   >
-    <!-- 左侧边栏 -->
+    <!-- 左边 -->
     <side-bar
       id="guide-sidebar"
       class="sidebar-container"
       :style="{ backgroundColor: store.getters.cssVar.menuBg }"
     />
-    <!-- 右侧边栏 -->
+    <!-- 右边 -->
     <div class="main-container">
       <div class="fixed-header">
-        <Navbar />
+        <nav-bar />
         <!-- tag view -->
         <tag-view />
       </div>
@@ -21,12 +21,12 @@
   </div>
 </template>
 <script setup>
-import SideBar from './components/Sidebar/index.vue'
-import Navbar from './components/Navbar/index'
-import AppMain from './components/AppMain/index'
+import SideBar from './components/Sidebar'
+import NavBar from './components/Navbar'
+import AppMain from './components/AppMain'
+import { useStore } from 'vuex'
 import TagView from '@/components/TagView/index.vue'
 
-import { useStore } from 'vuex'
 const store = useStore()
 </script>
 
@@ -48,7 +48,7 @@ const store = useStore()
   top: 0px;
   right: 0px;
   z-index: 10;
-  width: calc(100% - #{$sideBarWidth}); // 用来动态计算宽度
+  width: calc(100% - #{$sideBarWidth}); // 用来动态计算宽度的
   transition: width 0.28s;
 }
 .hideSidebar .fixed-header {

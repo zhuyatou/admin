@@ -7,36 +7,39 @@
     :unique-opened="true"
     :default-active="activePath"
     :router="true"
-    :collapse='!store.getters.sideBarOpen'
+    :collapse="!store.getters.sideBarOpen"
   >
-    <!-- 子菜单1xiaoshi 16fen -->
-
+    <!-- 一级二级菜单的展示 -->
     <sidebar-item v-for="item in routes" :key="item.path" :route="item" />
   </el-menu>
 </template>
 <script setup>
 import { useRouter, useRoute } from 'vue-router'
-import { filterRouters, generateMenus } from '@/utils/router.js'
+import { filterRouter, generateMenus } from '@/utils/router.js'
 import { computed } from 'vue'
 import SidebarItem from './SidebarItem.vue'
 import { useStore } from 'vuex'
 const store = useStore()
 const router = useRouter()
+
 // 获取路由
-console.log(router.getRoutes())
+// console.log(router.getRoutes())
 // 去重
-console.log(filterRouters(router.getRoutes()))
-console.log(generateMenus(filterRouters(router.getRoutes())))
+// console.log(filterRouter(router.getRoutes()))
+// 格式化
+// console.log(generateMenus(filterRouter(router.getRoutes())))
+
+// 因为以后路由要变化,所以用计算属性
 const routes = computed(() => {
-  const filterRoutes = filterRouters(router.getRoutes())
+  const filterRoutes = filterRouter(router.getRoutes())
   return generateMenus(filterRoutes)
 })
+
 const route = useRoute()
-// console.log(route)
+// 以后激活的路由要变化
 const activePath = computed(() => {
   const { path } = route
   return path
 })
-console.log(routes.value)
 </script>
 <style lang="scss" scoped></style>

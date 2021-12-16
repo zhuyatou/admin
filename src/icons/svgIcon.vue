@@ -1,5 +1,5 @@
 <template>
-  <svg aria-hidden="true" :class="getClassName" :style="props.style">
+  <svg aria-hidden="true" :class="getClassName">
     <use :xlink:href="iconName"></use>
   </svg>
 </template>
@@ -20,11 +20,11 @@ const iconName = computed(() => {
 
 const getClassName = computed(() => {
   if (props.className) {
-    // 如果传了className  ==>defaultSvgClass sideClass
-    return `defaultSvgClass ${props.className} `
+    // 如果传了className ==> defaultSvgClass sideClass
+    return `defaultSvgClass ${props.className}`
   } else {
-    // 如果没传className  ==>defaultSvgClass
-    return 'defaultSvgClass'
+    // 如果没传className ==> defaultSvgClass
+    return `defaultSvgClass`
   }
 })
 </script>
@@ -33,7 +33,7 @@ const getClassName = computed(() => {
 .defaultSvgClass {
   width: 1em;
   height: 1em;
-  fill: currentColor;
+  fill: #707070;
   vertical-align: -0.15em;
   overflow: hidden;
   margin-right: 10px;
