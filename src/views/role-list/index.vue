@@ -1,70 +1,69 @@
 <template>
-  <div>
-    <theme-table :cbs="cbs">
-      <template #default="{ headerStyleObj }">
-        <el-table
-          :data="tableData"
-          border
-          style="width: 100%"
-          :header-cell-style="headerStyleObj"
-          ref="table"
-        >
-          <!-- 展开行显示角色下面的权限 -->
-          <el-table-column type="expand" label=">">
-            <template #default="{ row }">
-              <div class="tags">
-                <el-tag
-                  size="mini"
-                  v-for="item in getAllPermissions_"
-                  :key="item.id"
-                  :class="isActive(item, row)"
-                  >{{ item.title }}</el-tag
-                >
-              </div>
-            </template>
-          </el-table-column>
-          <el-table-column
-            :label="$t('msg.role.index')"
-            type="index"
-            width="160"
-          ></el-table-column>
-          <el-table-column
-            :label="$t('msg.role.name')"
-            prop="title"
-            width="200"
-          ></el-table-column
-          ><el-table-column
-            :label="$t('msg.role.desc')"
-            prop="describe"
-          ></el-table-column>
-          <el-table-column :label="$t('msg.role.action')">
-            <template #default="{ row }">
-              <el-badge
-                type="primary"
-                v-if="row.permissions && row.permissions.length >= 0"
-                :value="row.permissions.length"
+  <theme-table :cbs="cbs">
+    <template #default="{ headerStyleObj }">
+      <el-table
+        :data="tableData"
+        border
+        style="width: 100%"
+        :header-cell-style="headerStyleObj"
+        ref="table"
+      >
+        <!-- 展开行显示角色下面的权限 -->
+        <el-table-column type="expand" label=">">
+          <template #default="{ row }">
+            <div class="tags">
+              <el-tag
+                size="mini"
+                v-for="item in getAllPermissions_"
+                :key="item.id"
+                :class="isActive(item, row)"
+                >{{ item.title }}</el-tag
               >
-                <el-button
-                  type="primary"
-                  size="mini"
-                  @click="showeditPermission(row)"
-                  >{{ $t('msg.role.assignPermissions') }}</el-button
-                >
-              </el-badge>
-            </template>
-          </el-table-column>
-        </el-table>
-      </template>
-    </theme-table>
+            </div>
+          </template>
+        </el-table-column>
+        <el-table-column
+          :label="$t('msg.role.index')"
+          type="index"
+          width="160"
+        ></el-table-column>
+        <el-table-column
+          :label="$t('msg.role.name')"
+          prop="title"
+          width="200"
+        ></el-table-column
+        ><el-table-column
+          :label="$t('msg.role.desc')"
+          prop="describe"
+        ></el-table-column>
+        <el-table-column :label="$t('msg.role.action')">
+          <template #default="{ row }">
+            <el-badge
+              type="primary"
+              v-if="row.permissions && row.permissions.length >= 0"
+              :value="row.permissions.length"
+            >
+              <el-button
+                type="primary"
+                size="mini"
+                @click="showeditPermission(row)"
+                >{{ $t('msg.role.assignPermissions') }}</el-button
+              >
+            </el-badge>
+          </template>
+        </el-table-column>
+      </el-table>
+    </template>
+  </theme-table>
 
-    <!-- 角色修改权限 模态框 -->
-    <edit-permission
-      v-if="isShowDialog"
-      :isShowDialog="isShowDialog"
-      @close="isShowDialog = false"
-      :roleId="selectRoleId"
-    />
-  </div>
+  <!-- 角色修改权限 模态框 -->
+  <edit-permission
+    v-if="isShowDialog"
+    :isShowDialog="isShowDialog"
+    @close="isShowDialog = false"
+    :roleId="selectRoleId"
+    @confirm="confirm"
+  />
 </template>
 
 <script setup>

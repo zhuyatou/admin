@@ -37,6 +37,7 @@ router.beforeEach(async (to, from, next) => {
         filterRoutes.forEach((activeRoute) => {
           router.addRoute(activeRoute)
         })
+        next(to.path)
       }
       // 首次登录后 跳转到首页
       next()

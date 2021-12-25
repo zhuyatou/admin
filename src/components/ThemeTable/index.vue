@@ -1,8 +1,6 @@
 <template>
   <div>
-    <el-card>
-      <slot :headerStyleObj="headerStyleObj" />
-    </el-card>
+    <slot :headerStyleObj="headerStyleObj" />
   </div>
 </template>
 <script setup>
@@ -28,6 +26,9 @@ const hoverBgColor = ref(store.getters.cssVar['light-3'])
 const badgeColorHover = ref(store.getters.cssVar['light-1'])
 const badgeColor = ref(store.getters.cssVar['light-4'])
 
+// 拖拽的class
+const ghost = ref(store.getters.cssVar['light-1'])
+
 // 监听主题切换
 watch(
   () => {
@@ -39,6 +40,7 @@ watch(
     headerStyleObj.value.background = store.getters.cssVar['light-3']
     badgeColorHover.value = store.getters.cssVar.primary
     badgeColor.value = store.getters.cssVar['light-4']
+    ghost.value = store.getters.cssVar['light-1']
   }
 )
 
@@ -74,5 +76,9 @@ watchLang(...props.cbs)
   &:hover {
     background: v-bind(badgeColorHover);
   }
+}
+:deep(.ghost) {
+  background-color: v-bind(ghost) !important;
+  color: #fff !important;
 }
 </style>
